@@ -1,4 +1,4 @@
-const gameBoard = document.querySelector(".gameboard");
+const gameBoardUI = document.querySelector(".gameboard");
 const winningCombinations = [
   [0, 1, 2],
   [3, 4, 5],
@@ -26,9 +26,9 @@ class GameBoard {
     return this.board;
   }
 
-  placeSignOnBoard(playerSign, position) {
-    if (this.board[position] == 0) {
-      this.board[position] = playerSign;
+  placeSignOnBoard(playerSign, cell) {
+    if (this.board[cell] == 0) {
+      this.board[cell] = playerSign;
     }
   }
 
@@ -38,6 +38,10 @@ class GameBoard {
       if (this.board[i] == 0) cells.push(i);
     }
     return cells;
+  }
+
+  isCellFree(cell) {
+    return this.board[cell] == 0;
   }
 
   isWinner() {
@@ -63,16 +67,21 @@ class GameBoard {
 
 class GameController {
   constructor() {
-    this.player1 = new Player(prompt("Player 1 Name"), 1, "X");
-    this.player2 = new Player(prompt("Player 2 Name"), 2, "O");
-
+    this.player1 = new Player(prompt("Player 1 Name"), "X");
+    this.player2 = new Player(prompt("Player 2 Name"), "O");
     this.activePlayer = this.player1;
-
     this.board = new GameBoard();
+  }
 
-    this.isOver = false;
+  startGame() {
+    UIController.createGameBoard();
 
-    this.message = "";
+    gameBoardUI.addEventListener("click", (e) => {
+      const cell = e.target.classList[0].split("-")[1];
+      if (this.board.isCellFree(cell)) {
+        this.playRound(cell);
+      }
+    });
   }
 
   switchTurn() {
@@ -80,17 +89,16 @@ class GameController {
       this.activePlayer === this.player1 ? this.player2 : this.player1;
   }
 
-  playRound(position) {
-    this.board.placeSignOnBoard(this.activePlayer.sign, position);
+  playRound(cell) {
+    this.board.placeSignOnBoard(this.activePlayer.sign, cell);
+    UIController.placeSignOnBoard(this.activePlayer.sign, cell);
 
     if (this.board.isWinner()) {
-      this.message = `${this.activePlayer.name} has won the game!`;
-      this.isOver = true;
+      UIController.updateMessage(`${this.activePlayer.name} has won the game!`);
     } else if (this.board.isTie()) {
-      this.message = "It's a tie!";
-      this.isOver = true;
+      UIController.updateMessage("It's a tie!");
     } else {
-      this.message = "Next Round.";
+      UIController.updateMessage("Next Round.");
     }
 
     this.switchTurn();
@@ -101,15 +109,14 @@ class UIController {
   static createGameBoard() {
     for (let i = 0; i < 9; i++) {
       const cell = document.createElement("button");
-      cell.classList.add("cell");
       cell.classList.add(`cell-${i}`);
-      cell.onclick = UIController.placeSignOnBoard;
-      gameBoard.appendChild(cell);
+      gameBoardUI.appendChild(cell);
     }
   }
 
-  static placeSignOnBoard(e) {
-    console.log(e.target);
+  static placeSignOnBoard(sign, cell) {
+    const cellBtn = document.querySelector(`.cell-${cell}`);
+    cellBtn.textContent = sign;
   }
 
   static updateMessage(message) {
@@ -117,28 +124,5 @@ class UIController {
   }
 }
 
-UIController.createGameBoard();
 const game = new GameController();
-UIController.updateMessage("Test Message");
-// const game = new GameController();
-
-//while (!game.isOver) {
-//  game.playRound(
-//    prompt(`${game.activePlayer.name}'s turn. Where to put sign? (0-8)`),
-//  );
-//  console.log(game.message);
-//}
-
-//game.placeSignOnBoard(1, 0);
-//game.placeSignOnBoard(2, 1);
-//game.placeSignOnBoard(1, 2);
-//game.placeSignOnBoard(2, 4);
-//game.placeSignOnBoard(1, 3);
-//game.placeSignOnBoard(2, 5);
-//game.placeSignOnBoard(1, 7);
-//game.placeSignOnBoard(2, 6);
-//game.placeSignOnBoard(1, 8);
-//console.log(game.getBoardStatus());
-//console.log(game.isWinner());
-//console.log(game.availableCells());
-//console.log(game.isTie());
+game.startGame();
