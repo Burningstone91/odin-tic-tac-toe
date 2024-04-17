@@ -1,4 +1,5 @@
 const gameBoardUI = document.querySelector(".gameboard");
+const startBtn = document.querySelector(".start-button");
 const winningCombinations = [
   [0, 1, 2],
   [3, 4, 5],
@@ -66,15 +67,12 @@ class GameBoard {
 }
 
 class GameController {
-  constructor() {
+  startGame() {
+    UIController.resetGameBoard();
     this.player1 = new Player(prompt("Player 1 Name"), "X");
     this.player2 = new Player(prompt("Player 2 Name"), "O");
     this.activePlayer = this.player1;
     this.board = new GameBoard();
-  }
-
-  startGame() {
-    UIController.createGameBoard();
 
     gameBoardUI.addEventListener("click", (e) => {
       const cell = e.target.classList[0].split("-")[1];
@@ -110,11 +108,9 @@ class GameController {
 }
 
 class UIController {
-  static createGameBoard() {
+  static resetGameBoard() {
     for (let i = 0; i < 9; i++) {
-      const cell = document.createElement("button");
-      cell.classList.add(`cell-${i}`);
-      gameBoardUI.appendChild(cell);
+      document.querySelector(`.cell-${i}`).textContent = "";
     }
   }
 
@@ -128,5 +124,7 @@ class UIController {
   }
 }
 
-const game = new GameController();
-game.startGame();
+startBtn.addEventListener("click", () => {
+  const game = new GameController();
+  game.startGame();
+});
