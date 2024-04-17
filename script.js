@@ -20,7 +20,7 @@ class Player {
   }
 }
 
-class Gameboard {
+class GameBoard {
   constructor() {
     this.board = Array(9).fill(0);
   }
@@ -60,21 +60,38 @@ class Gameboard {
   }
 }
 
-const player1 = new Player("User", 1);
-player1.setSign("x");
-console.log(player1);
+class GameController {
+  constructor() {
+    this.player1 = new Player(prompt("Player 1 Name"), 1);
+    this.player2 = new Player(prompt("Player 2 Name"), 2);
 
-const game = new Gameboard();
-game.placeSignOnBoard(1, 0);
-game.placeSignOnBoard(2, 1);
-game.placeSignOnBoard(1, 2);
-game.placeSignOnBoard(2, 4);
-game.placeSignOnBoard(1, 3);
-game.placeSignOnBoard(2, 5);
-game.placeSignOnBoard(1, 7);
-game.placeSignOnBoard(2, 6);
-game.placeSignOnBoard(1, 8);
-console.log(game.getBoardStatus());
-console.log(game.isWinner());
-console.log(game.availableCells());
-console.log(game.isTie());
+    this.player1.setSign("x");
+    this.player2.setSign("o");
+
+    this.activePlayer = player1;
+
+    this.board = new GameBoard();
+  }
+
+  switchTurn() {
+    this.activePlayer =
+      this.activePlayer === this.player1 ? this.player2 : this.player1;
+  }
+}
+
+const game = new GameController();
+console.log(game.player1);
+console.log(game.player2);
+//game.placeSignOnBoard(1, 0);
+//game.placeSignOnBoard(2, 1);
+//game.placeSignOnBoard(1, 2);
+//game.placeSignOnBoard(2, 4);
+//game.placeSignOnBoard(1, 3);
+//game.placeSignOnBoard(2, 5);
+//game.placeSignOnBoard(1, 7);
+//game.placeSignOnBoard(2, 6);
+//game.placeSignOnBoard(1, 8);
+//console.log(game.getBoardStatus());
+//console.log(game.isWinner());
+//console.log(game.availableCells());
+//console.log(game.isTie());
