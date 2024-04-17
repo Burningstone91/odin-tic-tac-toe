@@ -72,20 +72,46 @@ class GameController {
     this.player1.setSign("x");
     this.player2.setSign("o");
 
-    this.activePlayer = player1;
+    this.activePlayer = this.player1;
 
     this.board = new GameBoard();
+
+    this.isOver = false;
+
+    this.message = "";
   }
 
   switchTurn() {
     this.activePlayer =
       this.activePlayer === this.player1 ? this.player2 : this.player1;
   }
+
+  playRound(position) {
+    this.board.placeSignOnBoard(this.activePlayer.id, position);
+
+    if (this.board.isWinner()) {
+      this.message = `${this.activePlayer.name} has won the game!`;
+      this.isOver = true;
+    } else if (this.board.isTie()) {
+      this.message = "It's a tie!";
+      this.isOver = true;
+    } else {
+      this.message = "Next Round.";
+    }
+
+    this.switchTurn();
+  }
 }
 
 const game = new GameController();
-console.log(game.player1);
-console.log(game.player2);
+
+while (!game.isOver) {
+  game.playRound(
+    prompt(`${game.activePlayer.name}'s turn. Where to put sign? (0-8)`),
+  );
+  console.log(game.message);
+}
+
 //game.placeSignOnBoard(1, 0);
 //game.placeSignOnBoard(2, 1);
 //game.placeSignOnBoard(1, 2);
