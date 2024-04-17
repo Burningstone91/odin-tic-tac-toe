@@ -69,8 +69,12 @@ class GameBoard {
 class GameController {
   startGame() {
     UIController.resetGameBoard();
-    this.player1 = new Player(prompt("Player 1 Name"), "X");
-    this.player2 = new Player(prompt("Player 2 Name"), "O");
+
+    this.player1 = new Player(prompt("Player 1 Name", "Player 1"), "X");
+    this.player2 = new Player(prompt("Player 2 Name", "Player 2"), "O");
+    UIController.setPlayerName(1, this.player1.name);
+    UIController.setPlayerName(2, this.player2.name);
+
     this.activePlayer = this.player1;
     this.board = new GameBoard();
 
@@ -117,6 +121,10 @@ class UIController {
   static placeSignOnBoard(sign, cell) {
     const cellBtn = document.querySelector(`.cell-${cell}`);
     cellBtn.textContent = sign;
+  }
+
+  static setPlayerName(player, name) {
+    document.querySelector(`.player-${player}`).textContent = name;
   }
 
   static updateMessage(message) {
