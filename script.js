@@ -1,3 +1,4 @@
+const gameBoard = document.querySelector(".gameboard");
 const winningCombinations = [
   [0, 1, 2],
   [3, 4, 5],
@@ -10,12 +11,8 @@ const winningCombinations = [
 ];
 
 class Player {
-  constructor(name, id) {
+  constructor(name, sign) {
     this.name = name;
-    this.id = id;
-  }
-
-  setSign(sign) {
     this.sign = sign;
   }
 }
@@ -29,9 +26,9 @@ class GameBoard {
     return this.board;
   }
 
-  placeSignOnBoard(playerId, position) {
+  placeSignOnBoard(playerSign, position) {
     if (this.board[position] == 0) {
-      this.board[position] = playerId;
+      this.board[position] = playerSign;
     }
   }
 
@@ -66,11 +63,8 @@ class GameBoard {
 
 class GameController {
   constructor() {
-    this.player1 = new Player(prompt("Player 1 Name"), 1);
-    this.player2 = new Player(prompt("Player 2 Name"), 2);
-
-    this.player1.setSign("x");
-    this.player2.setSign("o");
+    this.player1 = new Player(prompt("Player 1 Name"), 1, "X");
+    this.player2 = new Player(prompt("Player 2 Name"), 2, "O");
 
     this.activePlayer = this.player1;
 
@@ -87,7 +81,7 @@ class GameController {
   }
 
   playRound(position) {
-    this.board.placeSignOnBoard(this.activePlayer.id, position);
+    this.board.placeSignOnBoard(this.activePlayer.sign, position);
 
     if (this.board.isWinner()) {
       this.message = `${this.activePlayer.name} has won the game!`;
@@ -103,6 +97,29 @@ class GameController {
   }
 }
 
+class UIController {
+  static createGameBoard() {
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement("button");
+      cell.classList.add("cell");
+      cell.classList.add(`cell-${i}`);
+      cell.onclick = UIController.placeSignOnBoard;
+      gameBoard.appendChild(cell);
+    }
+  }
+
+  static placeSignOnBoard(e) {
+    console.log(e.target);
+  }
+
+  static updateMessage(message) {
+    document.querySelector(".message").textContent = message;
+  }
+}
+
+UIController.createGameBoard();
+const game = new GameController();
+UIController.updateMessage("Test Message");
 // const game = new GameController();
 
 //while (!game.isOver) {
