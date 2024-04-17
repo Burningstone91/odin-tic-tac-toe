@@ -35,6 +35,14 @@ class Gameboard {
     }
   }
 
+  availableCells() {
+    const cells = [];
+    for (let i = 0; i < this.board.length; i++) {
+      if (this.board[i] == 0) cells.push(i);
+    }
+    return cells;
+  }
+
   isWinner() {
     for (let combi of winningCombinations) {
       if (
@@ -46,6 +54,10 @@ class Gameboard {
     }
     return false;
   }
+
+  isTie() {
+    return !this.isWinner() && this.availableCells().length == 0;
+  }
 }
 
 const player1 = new Player("User", 1);
@@ -53,9 +65,16 @@ player1.setSign("x");
 console.log(player1);
 
 const game = new Gameboard();
-game.placeSignOnBoard(1, 5);
-game.placeSignOnBoard(2, 8);
-game.placeSignOnBoard(2, 7);
+game.placeSignOnBoard(1, 0);
+game.placeSignOnBoard(2, 1);
+game.placeSignOnBoard(1, 2);
 game.placeSignOnBoard(2, 4);
+game.placeSignOnBoard(1, 3);
+game.placeSignOnBoard(2, 5);
+game.placeSignOnBoard(1, 7);
+game.placeSignOnBoard(2, 6);
+game.placeSignOnBoard(1, 8);
 console.log(game.getBoardStatus());
 console.log(game.isWinner());
+console.log(game.availableCells());
+console.log(game.isTie());
