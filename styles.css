@@ -1,6 +1,26 @@
+.container {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+}
+
+.player > p {
+  font-size: 3.5rem;
+  text-align: center;
+}
+
 .gameboard {
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   justify-content: center;
+}
+
+[class*="cell"] {
+  font-size: 5rem;
+}
+
+.message {
+  text-align: center;
+  font-size: 3.2rem;
 }
