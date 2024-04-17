@@ -78,7 +78,11 @@ class GameController {
 
     gameBoardUI.addEventListener("click", (e) => {
       const cell = e.target.classList[0].split("-")[1];
-      if (this.board.isCellFree(cell)) {
+      if (
+        this.board.isCellFree(cell) &&
+        !this.board.isWinner() &&
+        !this.board.isTie()
+      ) {
         this.playRound(cell);
       }
     });
