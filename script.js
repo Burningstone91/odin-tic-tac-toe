@@ -103,14 +103,14 @@ class GameController {
   }
 }
 
-const game = new GameController();
+// const game = new GameController();
 
-while (!game.isOver) {
-  game.playRound(
-    prompt(`${game.activePlayer.name}'s turn. Where to put sign? (0-8)`),
-  );
-  console.log(game.message);
-}
+//while (!game.isOver) {
+//  game.playRound(
+//    prompt(`${game.activePlayer.name}'s turn. Where to put sign? (0-8)`),
+//  );
+//  console.log(game.message);
+//}
 
 //game.placeSignOnBoard(1, 0);
 //game.placeSignOnBoard(2, 1);
