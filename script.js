@@ -58,6 +58,10 @@ class GameBoard {
   isTie() {
     return !this.isWinner() && this.availableCells().length == 0;
   }
+
+  resetBoard() {
+    this.board = Array(9).fill(0);
+  }
 }
 
 class GameController {
